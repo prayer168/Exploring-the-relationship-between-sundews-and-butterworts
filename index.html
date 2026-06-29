@@ -108,6 +108,8 @@ header.nav{position:sticky;top:0;z-index:100;background:var(--green-900);box-sha
 .sp li{padding:6px 0 6px 24px;position:relative;font-size:.95rem}
 .sp li::before{content:"●";position:absolute;left:0;opacity:.7}
 .sp .emoji{font-size:2.6rem;position:absolute;top:18px;right:20px;opacity:.9}
+.sp .sp-img{position:absolute;top:14px;right:14px;width:86px;height:86px;opacity:.98;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
+@media(max-width:480px){.sp .sp-img{width:66px;height:66px}}
 
 /* ---------- TABLE ---------- */
 .tbl-scroll{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
@@ -252,7 +254,6 @@ footer a{color:var(--green-300)}
 <div class="page active" id="page-home">
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow" style="background:rgba(255,255,255,.15);color:#bdf0d6">科展研究設計 ｜ 國小組</span>
       <h1>黏液型食蟲植物的祕密</h1>
       <p class="sub">探討<strong>光照</strong>與<strong>濕度</strong>對食蟲植物<strong>黏液表現</strong>與<strong>餌料黏附能力</strong>之影響</p>
       <p class="ex">—— 以毛氈苔與捕蟲堇為例</p>
@@ -273,7 +274,6 @@ footer a{color:var(--green-300)}
         <div class="meta-cell"><div class="k">研究主軸</div><div class="v">光照・濕度・黏液</div></div>
         <div class="meta-cell"><div class="k">研究植物</div><div class="v">毛氈苔・捕蟲堇</div></div>
         <div class="meta-cell"><div class="k">適合年級</div><div class="v">中高年級</div></div>
-        <div class="meta-cell"><div class="k">研究期程</div><div class="v">約 5～8 週</div></div>
       </div>
     </div>
   </div>
@@ -330,7 +330,33 @@ footer a{color:var(--green-300)}
       <p class="sec-lead">毛氈苔與捕蟲堇都屬於<strong>黏液型食蟲植物</strong>，捕蟲方式有共同基礎，但葉片構造不同，因此要分別建立觀察指標。</p>
       <div class="species">
         <div class="sp sundew">
-          <span class="emoji">🌿</span>
+          <svg class="sp-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="毛氈苔示意圖">
+            <defs>
+              <radialGradient id="sdLeaf" cx="50%" cy="82%" r="78%">
+                <stop offset="0%" stop-color="#6e1c2c"/>
+                <stop offset="50%" stop-color="#c23a4d"/>
+                <stop offset="100%" stop-color="#ef7d8f"/>
+              </radialGradient>
+              <radialGradient id="sdDew" cx="35%" cy="28%" r="75%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="55%" stop-color="#ffffff" stop-opacity=".75"/>
+                <stop offset="100%" stop-color="#ffd9e0" stop-opacity=".25"/>
+              </radialGradient>
+            </defs>
+            <g>
+              <g transform="rotate(0 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(36 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(72 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(108 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(144 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(180 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(216 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(252 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(288 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <g transform="rotate(324 50 57)"><path d="M50 57 C45 42 46 28 50 17 C54 28 55 42 50 57 Z" fill="url(#sdLeaf)" stroke="#5a1622" stroke-width=".6"/><circle cx="50" cy="16" r="3.3" fill="url(#sdDew)"/></g>
+              <circle cx="50" cy="57" r="5" fill="#4a1019"/>
+            </g>
+          </svg>
           <h3>毛氈苔 Sundew</h3>
           <div class="latin">Drosera spp.</div>
           <p>葉面具有明顯的<strong>腺毛</strong>與<strong>黏液珠</strong>，受到餌料刺激後，腺毛可能朝向餌料彎曲。</p>
@@ -341,7 +367,45 @@ footer a{color:var(--green-300)}
           </ul>
         </div>
         <div class="sp butter">
-          <span class="emoji">🍃</span>
+          <svg class="sp-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="捕蟲堇示意圖">
+            <defs>
+              <radialGradient id="bwLeaf" cx="50%" cy="80%" r="78%">
+                <stop offset="0%" stop-color="#5b8a26"/>
+                <stop offset="50%" stop-color="#9cc63f"/>
+                <stop offset="100%" stop-color="#cfe879"/>
+              </radialGradient>
+              <radialGradient id="bwFlower" cx="50%" cy="38%" r="70%">
+                <stop offset="0%" stop-color="#d9bdf0"/>
+                <stop offset="55%" stop-color="#9a6fcf"/>
+                <stop offset="100%" stop-color="#6b46a6"/>
+              </radialGradient>
+            </defs>
+            <g>
+              <g transform="rotate(0 50 52)"><path d="M50 52 C33 46 28 28 50 11 C72 28 67 46 50 52 Z" fill="url(#bwLeaf)" stroke="#46701d" stroke-width=".6"/><ellipse cx="50" cy="30" rx="5" ry="11" fill="#ffffff" opacity=".14"/></g>
+              <g transform="rotate(60 50 52)"><path d="M50 52 C33 46 28 28 50 11 C72 28 67 46 50 52 Z" fill="url(#bwLeaf)" stroke="#46701d" stroke-width=".6"/><ellipse cx="50" cy="30" rx="5" ry="11" fill="#ffffff" opacity=".14"/></g>
+              <g transform="rotate(120 50 52)"><path d="M50 52 C33 46 28 28 50 11 C72 28 67 46 50 52 Z" fill="url(#bwLeaf)" stroke="#46701d" stroke-width=".6"/><ellipse cx="50" cy="30" rx="5" ry="11" fill="#ffffff" opacity=".14"/></g>
+              <g transform="rotate(180 50 52)"><path d="M50 52 C33 46 28 28 50 11 C72 28 67 46 50 52 Z" fill="url(#bwLeaf)" stroke="#46701d" stroke-width=".6"/><ellipse cx="50" cy="30" rx="5" ry="11" fill="#ffffff" opacity=".14"/></g>
+              <g transform="rotate(240 50 52)"><path d="M50 52 C33 46 28 28 50 11 C72 28 67 46 50 52 Z" fill="url(#bwLeaf)" stroke="#46701d" stroke-width=".6"/><ellipse cx="50" cy="30" rx="5" ry="11" fill="#ffffff" opacity=".14"/></g>
+              <g transform="rotate(300 50 52)"><path d="M50 52 C33 46 28 28 50 11 C72 28 67 46 50 52 Z" fill="url(#bwLeaf)" stroke="#46701d" stroke-width=".6"/><ellipse cx="50" cy="30" rx="5" ry="11" fill="#ffffff" opacity=".14"/></g>
+              <circle cx="50" cy="52" r="4.5" fill="#3f6419"/>
+              <!-- sticky mucilage specks -->
+              <circle cx="50" cy="22" r="1.5" fill="#fff" opacity=".75"/>
+              <circle cx="62" cy="40" r="1.3" fill="#fff" opacity=".6"/>
+              <circle cx="38" cy="40" r="1.3" fill="#fff" opacity=".6"/>
+              <circle cx="44" cy="62" r="1.2" fill="#fff" opacity=".5"/>
+              <circle cx="60" cy="62" r="1.2" fill="#fff" opacity=".5"/>
+              <!-- signature purple flower on a stalk -->
+              <path d="M78 78 C74 64 76 54 80 50" stroke="#4d7222" stroke-width="1.6" fill="none"/>
+              <g transform="translate(80 47)">
+                <circle cx="0" cy="-4" r="3.4" fill="url(#bwFlower)"/>
+                <circle cx="-4" cy="0" r="3.4" fill="url(#bwFlower)"/>
+                <circle cx="4" cy="0" r="3.4" fill="url(#bwFlower)"/>
+                <circle cx="-2.4" cy="4" r="3.2" fill="url(#bwFlower)"/>
+                <circle cx="2.4" cy="4" r="3.2" fill="url(#bwFlower)"/>
+                <circle cx="0" cy="0" r="1.7" fill="#fce98a"/>
+              </g>
+            </g>
+          </svg>
           <h3>捕蟲堇 Butterwort</h3>
           <div class="latin">Pinguicula spp.</div>
           <p>葉片表面較<strong>平滑</strong>，靠葉面分泌黏液黏住小昆蟲，適合觀察葉面濕潤、反光與餌料停留。</p>
