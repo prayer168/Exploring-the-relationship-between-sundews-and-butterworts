@@ -131,6 +131,34 @@ table.data tbody tr:hover{background:var(--dew)}
 .exp-panel{display:none;animation:fade .35s ease}
 .exp-panel.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* ---------- PER-EXPERIMENT ANIMATIONS ---------- */
+.exp-anim{margin-top:22px;background:linear-gradient(160deg,var(--green-800),var(--green-900));border-radius:16px;padding:18px 18px 20px;color:#eafff3}
+.exp-anim h4{color:#fff;margin-bottom:4px;font-size:1.02rem}
+.exp-anim .ahint{color:var(--dew);font-size:.85rem;margin-bottom:14px}
+.exp-anim .actrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.exp-anim .seg{display:inline-flex;background:rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.exp-anim .seg button{background:transparent;border:none;color:#cfeede;font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 12px;border-radius:8px;cursor:pointer;transition:.18s}
+.exp-anim .seg button.on{background:var(--gold);color:#3a2c00}
+.exp-anim .btn{background:var(--green-500);border:none;color:#fff;font-family:inherit;font-weight:700;font-size:.85rem;padding:8px 16px;border-radius:10px;cursor:pointer;transition:.18s}
+.exp-anim .btn:hover{background:var(--green-400)}
+.exp-anim input[type=range]{width:160px;max-width:46vw;accent-color:var(--gold)}
+.exp-anim .rlabel{font-size:.82rem;color:var(--dew);font-weight:700;min-width:64px}
+.exp-anim .stage{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.exp-anim canvas{background:rgba(255,255,255,.04);border-radius:12px;max-width:100%}
+.exp-anim .reading{font-size:.86rem;color:#dff6e9;margin-top:12px;background:rgba(255,255,255,.06);padding:10px 12px;border-radius:10px}
+.exp-anim .reading b{color:var(--gold)}
+.exp-anim .leafpot{flex:0 0 auto;text-align:center}
+.exp-anim .leafdisc{width:104px;height:104px;border-radius:50%;margin:0 auto 8px;position:relative;background:radial-gradient(circle at 50% 42%,#2c6e49,#112619);box-shadow:inset 0 0 18px rgba(0,0,0,.55);transition:.5s}
+.exp-anim .leafdisc .dot{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,rgba(189,240,214,.45));transform:translate(-50%,-50%);transition:.5s}
+.exp-anim .leafdisc .prey{position:absolute;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#caa46a,#6b4a22);transform:translate(-50%,-50%);transition:.45s;box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.exp-anim .leafdisc .prey.gone{opacity:.12;transform:translate(-50%,28px) scale(.7);filter:grayscale(1)}
+.exp-anim .leafpot .nm{font-size:.8rem;color:#cfeede;font-weight:700}
+.exp-anim .leafpot .sc{font-size:.8rem;color:var(--gold);font-weight:700}
+.exp-anim .bwrap{margin:10px 0}
+.exp-anim .bwrap .top{display:flex;justify-content:space-between;font-size:.84rem;color:#cfeede;margin-bottom:4px}
+.exp-anim .bwrap .top b{color:var(--gold)}
+.exp-anim .bar{height:14px;background:rgba(255,255,255,.1);border-radius:8px;overflow:hidden}
+.exp-anim .bar>span{display:block;height:100%;width:0;border-radius:8px;transition:width .7s ease}
 .exp-head{background:linear-gradient(135deg,var(--green-700),var(--green-600));color:#fff;border-radius:var(--radius) var(--radius) 0 0;padding:24px 26px}
 .exp-head .code{font-size:.8rem;letter-spacing:.1em;color:var(--dew);font-weight:700}
 .exp-head h3{font-size:1.3rem;color:#fff;margin:4px 0 8px}
@@ -765,12 +793,153 @@ EXPERIMENTS.forEach((e,i)=>{
     <h4 style="color:var(--green-700);margin-bottom:10px">實驗步驟</h4>
     <ol class="steps">${e.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
     <div class="exp-meta"><span class="chip">⏱ ${e.time}</span></div>
+    <div class="exp-anim" id="anim${i}"></div>
   </div>`;
   expPanels.appendChild(p);
 });
+EXPERIMENTS.forEach((e,i)=>buildExpAnim(e,document.getElementById('anim'+i)));
 expTabs.addEventListener('click',ev=>{const b=ev.target.closest('.exp-tab');if(!b)return;const i=b.dataset.i;
   document.querySelectorAll('.exp-tab').forEach(t=>t.classList.toggle('active',t.dataset.i===i));
   document.querySelectorAll('.exp-panel').forEach(p=>p.classList.toggle('active',p.dataset.i===i));});
+
+/* ===== PER-EXPERIMENT INTERACTIVE ANIMATIONS ===== */
+function makeLeaf(name){return `<div class="leafpot"><div class="leafdisc" data-leaf></div><div class="nm">${name}</div><div class="sc" data-sc></div></div>`;}
+function paintLeaf(disc,scEl,score,opt){
+  opt=opt||{};score=Math.max(0,Math.min(3,score));
+  const n=Math.round(score/3*14),bright=opt.bright==null?1:opt.bright;
+  disc.style.background=`radial-gradient(circle at 50% 42%,${opt.base||'#2c6e49'},#112619)`;
+  disc.style.filter=`brightness(${(0.62+bright*0.55).toFixed(2)})`;
+  let h='',placed=0;const rings=[{c:5,r:20},{c:9,r:34}];
+  for(const rg of rings)for(let k=0;k<rg.c&&placed<n;k++,placed++){
+    const a=(k/rg.c)*360+(rg.r>30?20:0),x=50+Math.cos(a*Math.PI/180)*(rg.r/104*100),y=44+Math.sin(a*Math.PI/180)*(rg.r/104*100),sz=(5+score*1.3).toFixed(1);
+    h+=`<div class="dot" style="left:${x}%;top:${y}%;width:${sz}px;height:${sz}px;opacity:${(0.35+bright*0.6).toFixed(2)}"></div>`;
+  }
+  disc.innerHTML=h;if(scEl)scEl.textContent='黏液 '+score.toFixed(1);
+}
+function bar(lbl,val,unit,col){return `<div class="bwrap"><div class="top"><span>${lbl}</span><b>${val}${unit}</b></div><div class="bar"><span data-fill style="background:linear-gradient(90deg,${col})"></span></div></div>`;}
+function buildExpAnim(e,m){
+  if(!m)return;
+  ({'實驗 1-1':anim11,'實驗 1-2':anim12,'實驗 2-1':anim21,'實驗 2-2':anim22,
+    '實驗 3-1':anim31,'實驗 3-2':anim32,'實驗 4-1':anim41,'實驗 4-2':anim42}[e.code]||function(){})(m);
+}
+/* 1-1 七天黏液變化（三種光照） */
+function anim11(m){
+  m.innerHTML=`<h4>🌱 互動：七天黏液變化</h4><div class="ahint">按播放，觀察三種光照下黏液珠隨天數累積的差異。</div>
+  <div class="actrl"><button class="btn" data-play>▶ 播放 7 天</button><span class="rlabel" data-day>第 7 天</span></div>
+  <div class="stage">${makeLeaf('明亮散射光')}${makeLeaf('半遮光')}${makeLeaf('較陰暗')}</div>
+  <div class="reading">散射光組黏液分數最高、陰暗組最低 —— 適當光照有助於維持黏液表現。</div>`;
+  const pots=m.querySelectorAll('.leafpot'),tg=[3.0,2.0,1.0],br=[1,0.7,0.45],dayEl=m.querySelector('[data-day]');
+  function draw(d){pots.forEach((p,j)=>paintLeaf(p.querySelector('[data-leaf]'),p.querySelector('[data-sc]'),tg[j]*d/7,{bright:br[j]}));dayEl.textContent='第 '+d+' 天';}
+  draw(7);
+  m.querySelector('[data-play]').onclick=()=>{let d=0;draw(0);const t=setInterval(()=>{d++;draw(d);if(d>=7)clearInterval(t);},430);};
+}
+/* 1-2 光照與植株健康 */
+function anim12(m){
+  m.innerHTML=`<h4>🔆 互動：光照與植株健康</h4><div class="ahint">拖動光照滑桿，看葉色、健康分數與植株狀態如何變化。</div>
+  <div class="actrl"><span class="rlabel">光照</span><input type="range" min="0" max="100" value="55" data-r><span class="rlabel" data-lv></span></div>
+  <div class="stage"><div class="leafpot"><div class="leafdisc" data-leaf></div><div class="nm" data-nm></div><div class="sc" data-sc></div></div>
+   <div style="flex:1 1 220px"><div class="reading" data-read></div></div></div>`;
+  const r=m.querySelector('[data-r]'),leaf=m.querySelector('[data-leaf]'),sc=m.querySelector('[data-sc]'),lv=m.querySelector('[data-lv]'),nm=m.querySelector('[data-nm]'),read=m.querySelector('[data-read]');
+  function up(){const v=+r.value;let base,health,br,name,lab,note;
+    if(v<25){base='#7d8a39';health=1.2;br=0.5;name='葉色偏黃、徒長';lab='較陰暗';note='光照太少 → 植株<b>徒長變黃</b>，黏液分泌也偏弱。';}
+    else if(v>80){base='#9c5a3a';health=1.6;br=1.35;name='葉緣紅褐、葉面乾';lab='強光直射';note='光照過強過熱 → 葉面<b>乾燥曬傷</b>，反而傷害植株。';}
+    else{base='#2c6e49';health=3;br=1;name='葉色翠綠、長新葉';lab='明亮散射光';note='明亮散射光 → 植株<b>健康翠綠</b>，最適合維持黏液。';}
+    leaf.style.background=`radial-gradient(circle at 50% 42%,${base},#112619)`;leaf.style.filter=`brightness(${br})`;leaf.innerHTML='';
+    sc.textContent='健康 '+health.toFixed(1);nm.textContent=name;lv.textContent=lab;read.innerHTML=note;}
+  r.oninput=up;up();
+}
+/* 2-1 濕度與黏液珠 */
+function anim21(m){
+  m.innerHTML=`<h4>💧 互動：濕度與黏液珠</h4><div class="ahint">拖動濕度滑桿，看葉面黏液珠的多寡與濕潤反光。</div>
+  <div class="actrl"><span class="rlabel">濕度</span><input type="range" min="0" max="100" value="60" data-r><span class="rlabel" data-lv></span></div>
+  <div class="stage"><div class="leafpot"><div class="leafdisc" data-leaf></div><div class="nm">毛氈苔</div><div class="sc" data-sc></div></div>
+   <div style="flex:1 1 220px"><div class="reading" data-read></div></div></div>`;
+  const r=m.querySelector('[data-r]'),leaf=m.querySelector('[data-leaf]'),sc=m.querySelector('[data-sc]'),lv=m.querySelector('[data-lv]'),read=m.querySelector('[data-read]');
+  function up(){const v=+r.value;let score,lab,note;
+    if(v<30){score=1.0;lab='低濕度';note='空氣太乾 → 黏液<b>變少、變乾</b>，餌料不易黏住。';}
+    else if(v<70){score=2.6;lab='中濕度';note='中濕度 → 黏液<b>適中穩定</b>，植株狀態良好。';}
+    else{score=3.0;lab='高濕度';note='高濕度 → 黏液<b>飽滿水亮</b>，但需注意通風防霉。';}
+    paintLeaf(leaf,sc,score,{bright:0.6+v/140});lv.textContent=lab;read.innerHTML=note;}
+  r.oninput=up;up();
+}
+/* 2-2 濕度與植株狀態 */
+function anim22(m){
+  m.innerHTML=`<h4>🌡️ 互動：濕度與植株狀態</h4><div class="ahint">點選三種濕度，看植株可能出現的狀況。</div>
+  <div class="actrl"><div class="seg" data-seg><button data-v="lo">低濕度</button><button data-v="mid" class="on">中濕度</button><button data-v="hi">高濕度</button></div></div>
+  <div class="stage"><div class="leafpot"><div class="leafdisc" data-leaf></div><div class="nm" data-nm></div><div class="sc" data-sc></div></div>
+   <div style="flex:1 1 240px"><div class="reading" data-read></div></div></div>`;
+  const leaf=m.querySelector('[data-leaf]'),nm=m.querySelector('[data-nm]'),sc=m.querySelector('[data-sc]'),read=m.querySelector('[data-read]');
+  const S={lo:{base:'#8a7a3a',br:0.6,nm:'葉片乾燥、捲曲',h:'健康 1.5',r:'低濕度 → 葉片<b>乾燥捲曲</b>、黏液流失，需避免完全乾枯。'},
+           mid:{base:'#2c6e49',br:1,nm:'葉色翠綠、健康',h:'健康 3.0',r:'中濕度 → 植株<b>最穩定健康</b>，是理想的觀察環境。'},
+           hi:{base:'#2c6e49',br:1.05,nm:'水珠偏多、注意發霉',h:'健康 2.3',r:'高濕度 → 黏液飽滿，但通風不足易<b>發霉腐爛</b>，需每天通風。'}};
+  function set(v){const o=S[v];leaf.style.background=`radial-gradient(circle at 50% 42%,${o.base},#112619)`;leaf.style.filter=`brightness(${o.br})`;leaf.innerHTML='';nm.textContent=o.nm;sc.textContent=o.h;read.innerHTML=o.r;
+    m.querySelectorAll('[data-seg] button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));}
+  m.querySelector('[data-seg]').onclick=ev=>{const b=ev.target.closest('button');if(b)set(b.dataset.v);};set('mid');
+}
+/* 3-1 光照組餌料黏附時間軸 */
+function anim31(m){
+  m.innerHTML=`<h4>🪰 互動：餌料黏附時間軸（光照組）</h4><div class="ahint">選一個光照組，按播放，看 60 分鐘內 8 顆餌料黏住或掉落的情形。</div>
+  <div class="actrl"><div class="seg" data-seg><button data-g="0" class="on">散射光</button><button data-g="1">半遮光</button><button data-g="2">陰暗</button></div>
+   <button class="btn" data-play>▶ 播放</button><span class="rlabel" data-t>60 分鐘</span></div>
+  <div class="stage"><div class="leafpot"><div class="leafdisc" data-leaf style="width:128px;height:128px"></div><div class="nm">8 顆餌料</div></div>
+   <div style="flex:1 1 220px"><div class="reading" data-read></div></div></div>`;
+  const keep=[7,5,3],names=['散射光','半遮光','陰暗'],leaf=m.querySelector('[data-leaf]'),read=m.querySelector('[data-read]'),tEl=m.querySelector('[data-t]');
+  const N=8,times=[0,5,10,30,60];let g=0;
+  function remainAt(min){return Math.round(N-(N-keep[g])*min/60);}
+  function show(min){const rem=remainAt(min);let h='';for(let k=0;k<N;k++){const a=(k/N)*360,x=50+Math.cos(a*Math.PI/180)*30,y=50+Math.sin(a*Math.PI/180)*30;h+=`<div class="prey ${k<rem?'':'gone'}" style="left:${x}%;top:${y}%"></div>`;}leaf.innerHTML=h;
+    tEl.textContent=min+' 分鐘';read.innerHTML=`${names[g]}組：第 ${min} 分鐘還有 <b>${rem}/8</b> 顆黏住（成功率約 <b>${Math.round(rem/N*100)}%</b>）。`;}
+  m.querySelector('[data-seg]').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;g=+b.dataset.g;m.querySelectorAll('[data-seg] button').forEach(x=>x.classList.toggle('on',x===b));show(60);};
+  m.querySelector('[data-play]').onclick=()=>{let idx=0;show(0);const t=setInterval(()=>{idx++;show(times[idx]);if(idx>=times.length-1)clearInterval(t);},720);};
+  show(60);
+}
+/* 3-2 濕度組 1 小時 vs 24 小時留住率 */
+function anim32(m){
+  m.innerHTML=`<h4>⏳ 互動：1 小時 vs 24 小時留住率（濕度組）</h4><div class="ahint">選一個濕度組，比較短時間與長時間後餌料還黏著的比例。</div>
+  <div class="actrl"><div class="seg" data-seg><button data-g="0">低濕度</button><button data-g="1" class="on">中濕度</button><button data-g="2">高濕度</button></div></div>
+  <div data-bars></div>`;
+  const D=[{n:'低濕度',a:60,b:35},{n:'中濕度',a:85,b:70},{n:'高濕度',a:90,b:78}];
+  const box=m.querySelector('[data-bars]');let g=1;
+  function draw(){const d=D[g];box.innerHTML=bar('1 小時留住率',d.a,'%','#5cc08c,#3a9d6a')+bar('24 小時留住率',d.b,'%','#e3b23c,#e06f5b')
+    +`<div class="reading">${d.n}：1 小時後 <b>${d.a}%</b>、24 小時後 <b>${d.b}%</b>。${g===0?'低濕度黏液乾得快，長時間留住率明顯下降。':'濕度足夠時，餌料即使過了一天仍多數黏著。'}</div>`;
+    const f=box.querySelectorAll('[data-fill]');requestAnimationFrame(()=>{f[0].style.width=d.a+'%';f[1].style.width=d.b+'%';});}
+  m.querySelector('[data-seg]').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;g=+b.dataset.g;m.querySelectorAll('[data-seg] button').forEach(x=>x.classList.toggle('on',x===b));draw();};
+  draw();
+}
+/* 4-1 黏液分數 vs 黏附成功率 散布圖 */
+function anim41(m){
+  m.innerHTML=`<h4>📈 互動：黏液分數 vs 黏附成功率</h4><div class="ahint">點「繪製趨勢線」，看黏液分數越高，黏附成功率是否越高。</div>
+  <div class="actrl"><button class="btn" data-tl>📉 繪製趨勢線</button><button class="btn" data-rs style="background:rgba(255,255,255,.14)">重設</button></div>
+  <canvas width="520" height="300"></canvas>
+  <div class="reading">資料點呈現<b>正相關</b>：黏液分數較高的組別，餌料黏附成功率通常也較高。</div>`;
+  const cv=m.querySelector('canvas'),ctx=cv.getContext('2d'),W=520,H=300,PL=46,PB=36;
+  const pts=[[3.0,88,'散射光'],[2.0,62,'半遮光'],[1.0,38,'陰暗'],[2.9,90,'高濕'],[2.5,82,'中濕'],[1.2,45,'低濕']];
+  const X=v=>PL+(v/3)*(W-PL-20),Y=v=>H-PB-(v/100)*(H-PB-20);
+  function axes(){ctx.clearRect(0,0,W,H);ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(PL,14);ctx.lineTo(PL,H-PB);ctx.lineTo(W-12,H-PB);ctx.stroke();
+    ctx.fillStyle='#bdf0d6';ctx.font='12px sans-serif';ctx.fillText('黏附成功率 %',6,12);ctx.fillText('黏液分數',W-72,H-8);
+    for(let g=0;g<=3;g++)ctx.fillText(g,X(g)-3,H-PB+16);for(let p=0;p<=100;p+=25)ctx.fillText(p,16,Y(p)+4);}
+  function dots(){pts.forEach(p=>{ctx.beginPath();ctx.fillStyle='#e3b23c';ctx.arc(X(p[0]),Y(p[1]),6,0,7);ctx.fill();ctx.fillStyle='#eafff3';ctx.font='11px sans-serif';ctx.fillText(p[2],X(p[0])+9,Y(p[1])+4);});}
+  function base(){axes();dots();}
+  function trend(){const n=pts.length;let sx=0,sy=0,sxy=0,sxx=0;pts.forEach(p=>{sx+=p[0];sy+=p[1];sxy+=p[0]*p[1];sxx+=p[0]*p[0];});
+    const b=(n*sxy-sx*sy)/(n*sxx-sx*sx),a=(sy-b*sx)/n,x0=0.6,x1=3;let prog=0;
+    const t=setInterval(()=>{prog=Math.min(1,prog+0.08);base();ctx.strokeStyle='#5cc08c';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(X(x0),Y(a+b*x0));const xe=x0+(x1-x0)*prog;ctx.lineTo(X(xe),Y(a+b*xe));ctx.stroke();if(prog>=1)clearInterval(t);},40);}
+  base();m.querySelector('[data-tl]').onclick=trend;m.querySelector('[data-rs]').onclick=base;
+}
+/* 4-2 最佳環境 vs 一般對照 + 重複驗證 */
+function anim42(m){
+  m.innerHTML=`<h4>✅ 互動：最佳環境 vs 一般對照</h4><div class="ahint">切換環境，並按「重複 3 次」看結果是否穩定。</div>
+  <div class="actrl"><div class="seg" data-seg><button data-g="best" class="on">最佳環境</button><button data-g="ctrl">一般對照</button></div>
+   <button class="btn" data-rep>🔁 重複 3 次驗證</button></div>
+  <div data-out></div>`;
+  const D={best:{muc:2.9,adh:89,t:[88,90,89],r:'最佳環境組黏液分數與黏附成功率都明顯較高。'},
+           ctrl:{muc:1.8,adh:58,t:[57,60,58],r:'一般對照組表現較低，凸顯環境條件的影響。'}};
+  const out=m.querySelector('[data-out]');let g='best';
+  function draw(){const d=D[g];out.innerHTML=bar('平均黏液分數',d.muc,' / 3','#5cc08c,#3a9d6a')+bar('黏附成功率',d.adh,'%','#e3b23c,#e06f5b')+`<div class="reading" data-r>${d.r}</div>`;
+    const f=out.querySelectorAll('[data-fill]');requestAnimationFrame(()=>{f[0].style.width=(d.muc/3*100)+'%';f[1].style.width=d.adh+'%';});}
+  m.querySelector('[data-seg]').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;g=b.dataset.g;m.querySelectorAll('[data-seg] button').forEach(x=>x.classList.toggle('on',x===b));draw();};
+  m.querySelector('[data-rep]').onclick=()=>{const d=D[g],rd=out.querySelector('[data-r]');let i=0;rd.innerHTML='重複驗證中…';
+    const t=setInterval(()=>{i++;rd.innerHTML=`第 ${i} 次黏附成功率：<b>${d.t[i-1]}%</b>　${i===3?'→ 三次結果接近，<b>結論穩定可信</b>。':''}`;if(i>=3)clearInterval(t);},720);};
+  draw();
+}
 
 /* ===== SIMULATOR ===== */
 const lightSlider=document.getElementById('lightSlider'),humSlider=document.getElementById('humSlider');
