@@ -19,35 +19,42 @@
   --radius:18px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:78px}
+html{scroll-behavior:smooth}
 body{font-family:'Noto Sans TC',system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.75;overflow-x:hidden}
 h1,h2,h3,h4{line-height:1.3;font-weight:900}
 a{color:var(--green-600);text-decoration:none}
 img{max-width:100%}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-section{padding:72px 0;position:relative}
+section,.page-inner{padding:64px 0;position:relative}
 .eyebrow{display:inline-block;font-size:.82rem;font-weight:700;letter-spacing:.18em;color:var(--green-500);background:var(--dew);padding:5px 14px;border-radius:999px;margin-bottom:14px}
 .sec-title{font-size:clamp(1.6rem,4vw,2.4rem);color:var(--green-800);margin-bottom:10px}
 .sec-lead{color:var(--muted);max-width:680px;margin-bottom:34px;font-size:1.02rem}
 
-/* ---------- NAV ---------- */
-header.nav{position:sticky;top:0;z-index:100;background:rgba(244,250,246,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1080px;margin:0 auto;padding:0 20px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:var(--green-800);font-size:1.05rem}
+/* ---------- HEADER + TABS ---------- */
+header.nav{position:sticky;top:0;z-index:100;background:var(--green-900);box-shadow:0 6px 18px rgba(15,36,23,.18)}
+.nav-inner{display:flex;align-items:center;gap:12px;max-width:1180px;margin:0 auto;padding:12px 20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:#fff;font-size:1.05rem;cursor:pointer}
 .brand .logo{width:34px;height:34px;flex:0 0 auto}
-.nav-links{display:flex;gap:4px}
-.nav-links a{font-size:.9rem;font-weight:500;color:var(--green-800);padding:8px 12px;border-radius:10px;transition:.2s}
-.nav-links a:hover{background:var(--dew)}
-.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:1.1rem;color:var(--green-800)}
-@media(max-width:860px){
-  .nav-links{position:fixed;top:64px;right:0;left:0;flex-direction:column;background:var(--paper);border-bottom:1px solid var(--line);padding:10px 16px;gap:2px;transform:translateY(-130%);transition:.32s;box-shadow:var(--shadow)}
-  .nav-links.open{transform:translateY(0)}
-  .nav-links a{padding:11px 8px}
-  .nav-toggle{display:block}
-}
+.tabbar{display:flex;gap:2px;overflow-x:auto;background:var(--green-800);padding:0 8px;scrollbar-width:thin;scrollbar-color:var(--green-500) transparent}
+.tabbar::-webkit-scrollbar{height:6px}
+.tabbar::-webkit-scrollbar-thumb{background:var(--green-600);border-radius:999px}
+.tab{flex:0 0 auto;background:transparent;border:none;color:#bfe6cf;font-family:inherit;font-weight:700;font-size:.92rem;padding:13px 17px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:.18s}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{color:#fff;border-bottom-color:var(--gold)}
+.tab .n{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:rgba(255,255,255,.14);border-radius:6px;font-size:.72rem;margin-right:6px}
+.tab.active .n{background:var(--gold);color:#3a2c00}
+
+/* ---------- PAGE SWITCH ---------- */
+.page{display:none}
+.page.active{display:block;animation:pagein .35s ease}
+@keyframes pagein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.page-nav{display:flex;justify-content:space-between;gap:12px;max-width:1080px;margin:0 auto;padding:8px 20px 60px}
+.page-nav button{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;font-family:inherit;font-weight:700;color:var(--green-700);cursor:pointer;transition:.2s;font-size:.92rem}
+.page-nav button:hover:not(:disabled){background:var(--dew);border-color:var(--green-400)}
+.page-nav button:disabled{opacity:.35;cursor:not-allowed}
 
 /* ---------- HERO ---------- */
-.hero{background:radial-gradient(1200px 600px at 80% -10%,var(--green-600),transparent),linear-gradient(160deg,var(--green-900),var(--green-700));color:#eafff3;padding:90px 0 110px;overflow:hidden}
+.hero{background:radial-gradient(1200px 600px at 80% -10%,var(--green-600),transparent),linear-gradient(160deg,var(--green-900),var(--green-700));color:#eafff3;padding:80px 0 96px;overflow:hidden}
 .hero .wrap{position:relative;z-index:2}
 .hero h1{font-size:clamp(2rem,6vw,3.4rem);color:#fff;letter-spacing:.5px}
 .hero .sub{font-size:clamp(1.05rem,2.4vw,1.35rem);color:var(--dew);margin:18px 0 8px;font-weight:500}
@@ -60,7 +67,6 @@ header.nav{position:sticky;top:0;z-index:100;background:rgba(244,250,246,.85);ba
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(227,178,60,.35)}
 .btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3)}
 .btn-ghost:hover{background:rgba(255,255,255,.2)}
-/* floating dew drops */
 .dewdrop{position:absolute;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.9),rgba(143,224,179,.35));filter:blur(.3px);animation:float 7s ease-in-out infinite;z-index:1;opacity:.7}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
 
@@ -71,6 +77,15 @@ header.nav{position:sticky;top:0;z-index:100;background:rgba(244,250,246,.85);ba
 .meta-cell:last-child{border-right:none}
 .meta-cell .k{font-size:.78rem;color:var(--green-300);letter-spacing:.08em;margin-bottom:4px}
 .meta-cell .v{font-weight:700;font-size:1rem;color:#fff}
+.home-guide{padding:60px 0 20px}
+.home-guide h2{color:var(--green-800);font-size:clamp(1.4rem,3.5vw,2rem);margin-bottom:8px}
+.home-guide p{color:var(--muted);margin-bottom:26px}
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.guide-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);cursor:pointer;transition:.2s}
+.guide-card:hover{transform:translateY(-4px);border-color:var(--green-400)}
+.guide-card .gi{font-size:1.7rem}
+.guide-card h3{color:var(--green-700);font-size:1.05rem;margin:8px 0 4px}
+.guide-card p{font-size:.9rem;margin:0}
 
 /* ---------- CARDS ---------- */
 .grid{display:grid;gap:20px}
@@ -106,7 +121,7 @@ table.data tbody tr:hover{background:var(--dew)}
 .pill.h{background:#dceaff;color:#27518f}
 .pill.r{background:#ffe2dc;color:#9c3322}
 
-/* ---------- EXPERIMENT TABS ---------- */
+/* ---------- EXPERIMENT SUB-TABS ---------- */
 .exp-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
 .exp-tab{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 15px;font-family:inherit;font-size:.88rem;font-weight:700;color:var(--green-700);cursor:pointer;transition:.2s}
 .exp-tab:hover{border-color:var(--green-400)}
@@ -148,7 +163,6 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .sim-species-pick{display:flex;gap:8px;margin-bottom:6px}
 .sim-species-pick button{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;padding:10px;border-radius:12px;font-family:inherit;font-weight:700;cursor:pointer;font-size:.9rem}
 .sim-species-pick button.on{background:var(--gold);color:#3a2c00;border-color:var(--gold)}
-/* leaf viz */
 .leaf-viz{display:grid;place-items:center;text-align:center}
 .leaf-stage{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 50% 45%,#2c6e49,#0f2417);position:relative;display:grid;place-items:center;transition:.4s;box-shadow:inset 0 0 40px rgba(0,0,0,.5)}
 .tentacle{position:absolute;width:5px;background:#3a9d6a;border-radius:999px;transform-origin:bottom center;bottom:50%;left:calc(50% - 2.5px)}
@@ -202,377 +216,412 @@ footer .fbrand{color:#fff;font-weight:900;font-size:1.1rem;margin-bottom:8px}
 footer a{color:var(--green-300)}
 
 .alt{background:linear-gradient(180deg,#eaf6ee,var(--paper))}
-.divider-leaf{text-align:center;font-size:1.6rem;color:var(--green-400);margin:0 0 8px}
 .callout{background:#fff7e6;border:1px solid #f0dca6;border-radius:14px;padding:18px 22px;color:#6b5410;font-size:.94rem;display:flex;gap:12px;align-items:flex-start}
 .callout .ic{font-size:1.4rem;flex:0 0 auto}
-.reveal{opacity:0;transform:translateY(28px);transition:.7s cubic-bezier(.2,.8,.2,1)}
-.reveal.in{opacity:1;transform:none}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- HEADER + TAB BAR -->
 <header class="nav">
   <div class="nav-inner">
-    <div class="brand">
+    <div class="brand" data-goto="home">
       <svg class="logo" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#2c6e49"/><path d="M20 8c-3 5-9 6-9 13a9 9 0 0018 0c0-7-6-8-9-13z" fill="#8fe0b3"/><circle cx="20" cy="22" r="3" fill="#e3b23c"/></svg>
       <span>食蟲植物的祕密</span>
     </div>
-    <button class="nav-toggle" id="navToggle" aria-label="選單">☰</button>
-    <nav class="nav-links" id="navLinks">
-      <a href="#motive">研究動機</a>
-      <a href="#review">文獻</a>
-      <a href="#purpose">研究目的</a>
-      <a href="#overview">實驗總表</a>
-      <a href="#experiments">八項實驗</a>
-      <a href="#simulator">互動模擬</a>
-      <a href="#analysis">資料分析</a>
-      <a href="#materials">材料經費</a>
-      <a href="#quiz">小測驗</a>
-    </nav>
   </div>
+  <nav class="tabbar" id="tabbar">
+    <button class="tab active" data-t="home">首頁</button>
+    <button class="tab" data-t="motive"><span class="n">一</span>研究動機</button>
+    <button class="tab" data-t="review"><span class="n">二</span>文獻探討</button>
+    <button class="tab" data-t="purpose"><span class="n">三</span>研究目的</button>
+    <button class="tab" data-t="overview"><span class="n">四</span>實驗總表</button>
+    <button class="tab" data-t="experiments"><span class="n">五</span>八項實驗</button>
+    <button class="tab" data-t="simulator">🧪 互動模擬</button>
+    <button class="tab" data-t="analysis"><span class="n">六</span>資料分析</button>
+    <button class="tab" data-t="materials"><span class="n">七</span>材料經費</button>
+    <button class="tab" data-t="results"><span class="n">九</span>預期成果</button>
+    <button class="tab" data-t="quiz">📝 小測驗</button>
+    <button class="tab" data-t="references"><span class="n">十</span>參考文獻</button>
+  </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero" style="padding-bottom:90px">
-  <div class="wrap">
-    <span class="eyebrow" style="background:rgba(255,255,255,.15);color:#bdf0d6">67 屆科展研究設計 ｜ 國小組</span>
-    <h1>黏液型食蟲植物的祕密</h1>
-    <p class="sub">探討<strong>光照</strong>與<strong>濕度</strong>對食蟲植物<strong>黏液表現</strong>與<strong>餌料黏附能力</strong>之影響</p>
-    <p class="ex">—— 以毛氈苔與捕蟲堇為例</p>
-    <div class="tags">
-      <span>🌱 植物與環境探究</span><span>💧 黏液表現分數</span><span>🔬 控制變因</span><span>📊 量化分析</span>
+<main id="main">
+
+<!-- ===== HOME ===== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow" style="background:rgba(255,255,255,.15);color:#bdf0d6">科展研究設計 ｜ 國小組</span>
+      <h1>黏液型食蟲植物的祕密</h1>
+      <p class="sub">探討<strong>光照</strong>與<strong>濕度</strong>對食蟲植物<strong>黏液表現</strong>與<strong>餌料黏附能力</strong>之影響</p>
+      <p class="ex">—— 以毛氈苔與捕蟲堇為例</p>
+      <div class="tags">
+        <span>🌱 植物與環境探究</span><span>💧 黏液表現分數</span><span>🔬 控制變因</span><span>📊 量化分析</span>
+      </div>
+      <div class="hero-cta">
+        <button class="btn btn-primary" data-goto="experiments">🧪 探索八項實驗</button>
+        <button class="btn btn-ghost" data-goto="simulator">▶ 玩玩黏液模擬器</button>
+      </div>
     </div>
-    <div class="hero-cta">
-      <a href="#experiments" class="btn btn-primary">🧪 探索八項實驗</a>
-      <a href="#simulator" class="btn btn-ghost">▶ 玩玩黏液模擬器</a>
+  </section>
+
+  <div class="meta-strip">
+    <div class="wrap" style="padding:0">
+      <div class="meta-grid">
+        <div class="meta-cell"><div class="k">研究類別</div><div class="v">國小自然科學</div></div>
+        <div class="meta-cell"><div class="k">研究主軸</div><div class="v">光照・濕度・黏液</div></div>
+        <div class="meta-cell"><div class="k">研究植物</div><div class="v">毛氈苔・捕蟲堇</div></div>
+        <div class="meta-cell"><div class="k">適合年級</div><div class="v">中高年級</div></div>
+        <div class="meta-cell"><div class="k">研究期程</div><div class="v">約 5～8 週</div></div>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- META STRIP -->
-<div class="meta-strip">
-  <div class="wrap" style="padding:0">
-    <div class="meta-grid">
-      <div class="meta-cell"><div class="k">研究類別</div><div class="v">國小自然科學</div></div>
-      <div class="meta-cell"><div class="k">研究主軸</div><div class="v">光照・濕度・黏液</div></div>
-      <div class="meta-cell"><div class="k">研究植物</div><div class="v">毛氈苔・捕蟲堇</div></div>
-      <div class="meta-cell"><div class="k">適合年級</div><div class="v">中高年級</div></div>
-      <div class="meta-cell"><div class="k">研究期程</div><div class="v">約 5～8 週</div></div>
+  <div class="wrap home-guide">
+    <h2>從哪裡開始？點選頁籤探索 👆</h2>
+    <p>本網站把整份研究設計拆成多個頁籤，你可以依序閱讀，也可以直接跳到有興趣的單元。</p>
+    <div class="guide-grid">
+      <div class="guide-card" data-goto="motive"><div class="gi">💡</div><h3>研究動機與文獻</h3><p>為什麼黏液有時多、有時少？認識兩種黏液高手。</p></div>
+      <div class="guide-card" data-goto="experiments"><div class="gi">🧪</div><h3>八項實驗設計</h3><p>分頁瀏覽每個實驗的變因與詳細步驟。</p></div>
+      <div class="guide-card" data-goto="simulator"><div class="gi">🎛️</div><h3>互動黏液模擬器</h3><p>拉動光照與濕度滑桿，看黏液分數即時變化。</p></div>
+      <div class="guide-card" data-goto="quiz"><div class="gi">📝</div><h3>互動小測驗</h3><p>6 題即時批改，檢驗你的理解。</p></div>
     </div>
   </div>
 </div>
 
-<!-- MOTIVE -->
-<section id="motive">
-  <div class="wrap">
-    <span class="eyebrow">一、研究動機</span>
-    <h2 class="sec-title">為什麼黏液有時多、有時少？</h2>
-    <p class="sec-lead">在自然課中我們學過植物需要陽光、空氣、水分和養分。但有一群特別的植物，除了行光合作用，還會捕捉小昆蟲——牠們就是<strong>食蟲植物</strong>。照顧時我們發現：葉片上的黏液並不是每天都一樣明顯。</p>
-    <div class="grid g3">
-      <div class="card reveal"><h3><span class="num">1</span>奇特的觀察</h3><p>毛氈苔有時葉面布滿像露珠般的黏液珠，捕蟲堇葉面也會濕潤反光；但有時黏液變少，餌料就比較不容易被黏住。</p></div>
-      <div class="card reveal"><h3><span class="num">2</span>產生疑問</h3><p>食蟲植物的黏液會不會受環境影響？<strong>光照與濕度</strong>是否會改變黏液表現？黏液變化後，餌料黏附能力是否也跟著改變？</p></div>
-      <div class="card reveal"><h3><span class="num">3</span>研究價值</h3><p>透過國小學生容易控制與測量的兩個條件，把觀察到的現象轉換成數據，將課堂所學應用在真實的科學探究中。</p></div>
+<!-- ===== MOTIVE ===== -->
+<div class="page" id="page-motive">
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">一、研究動機</span>
+      <h2 class="sec-title">為什麼黏液有時多、有時少？</h2>
+      <p class="sec-lead">在自然課中我們學過植物需要陽光、空氣、水分和養分。但有一群特別的植物，除了行光合作用，還會捕捉小昆蟲——牠們就是<strong>食蟲植物</strong>。照顧時我們發現：葉片上的黏液並不是每天都一樣明顯。</p>
+      <div class="grid g3">
+        <div class="card"><h3><span class="num">1</span>奇特的觀察</h3><p>毛氈苔有時葉面布滿像露珠般的黏液珠，捕蟲堇葉面也會濕潤反光；但有時黏液變少，餌料就比較不容易被黏住。</p></div>
+        <div class="card"><h3><span class="num">2</span>產生疑問</h3><p>食蟲植物的黏液會不會受環境影響？<strong>光照與濕度</strong>是否會改變黏液表現？黏液變化後，餌料黏附能力是否也跟著改變？</p></div>
+        <div class="card"><h3><span class="num">3</span>研究價值</h3><p>透過國小學生容易控制與測量的兩個條件，把觀察到的現象轉換成數據，將課堂所學應用在真實的科學探究中。</p></div>
+      </div>
+      <div style="margin-top:34px">
+        <h3 style="color:var(--green-700);margin-bottom:14px">課程概念怎麼連結？</h3>
+        <div class="tbl-scroll">
+          <table class="data">
+            <thead><tr><th>對應課程概念</th><th>與本研究的關聯</th></tr></thead>
+            <tbody>
+              <tr><td>植物的構造與功能</td><td>觀察毛氈苔腺毛、黏液珠與捕蟲堇葉面黏液如何協助捕捉餌料。</td></tr>
+              <tr><td>植物的生長條件</td><td>探討光照與濕度是否影響植物狀態及黏液表現。</td></tr>
+              <tr><td>生物適應環境</td><td>食蟲植物在養分不足環境中發展出捕蟲構造與黏液策略。</td></tr>
+              <tr><td>科學探究方法</td><td>透過控制變因、重複實驗、紀錄、比較與分析進行研究。</td></tr>
+              <tr><td>資訊融入探究</td><td>使用手機拍照、縮時攝影、照度計、濕度計與試算表整理資料。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </section>
+</div>
 
-    <div style="margin-top:34px" class="reveal">
-      <h3 style="color:var(--green-700);margin-bottom:14px">課程概念怎麼連結？</h3>
+<!-- ===== REVIEW ===== -->
+<div class="page" id="page-review">
+  <section class="alt">
+    <div class="wrap">
+      <span class="eyebrow">二、文獻探討</span>
+      <h2 class="sec-title">認識兩位黏液高手</h2>
+      <p class="sec-lead">毛氈苔與捕蟲堇都屬於<strong>黏液型食蟲植物</strong>，捕蟲方式有共同基礎，但葉片構造不同，因此要分別建立觀察指標。</p>
+      <div class="species">
+        <div class="sp sundew">
+          <span class="emoji">🌿</span>
+          <h3>毛氈苔 Sundew</h3>
+          <div class="latin">Drosera spp.</div>
+          <p>葉面具有明顯的<strong>腺毛</strong>與<strong>黏液珠</strong>，受到餌料刺激後，腺毛可能朝向餌料彎曲。</p>
+          <ul>
+            <li>觀察重點：黏液珠明顯程度與數量</li>
+            <li>腺毛彎曲（前人已深入研究）</li>
+            <li>本研究的主要材料</li>
+          </ul>
+        </div>
+        <div class="sp butter">
+          <span class="emoji">🍃</span>
+          <h3>捕蟲堇 Butterwort</h3>
+          <div class="latin">Pinguicula spp.</div>
+          <p>葉片表面較<strong>平滑</strong>，靠葉面分泌黏液黏住小昆蟲，適合觀察葉面濕潤、反光與餌料停留。</p>
+          <ul>
+            <li>觀察重點：葉面濕潤與反光變化</li>
+            <li>餌料停留與局部變化</li>
+            <li>本研究的輔助比較對象</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid g3" style="margin-top:24px">
+        <div class="card"><h3>☀️ 光照</h3><p>光合作用的重要條件。光照不足可能讓植株變弱、影響黏液分泌；過強或過熱則造成葉面乾燥。故採<strong>明亮散射光、半遮光、較陰暗</strong>三組，不用直射烈日。</p></div>
+        <div class="card"><h3>💧 濕度</h3><p>空氣太乾，黏液可能較快變乾變少；濕度太高雖能保濕，卻可能發霉。故分為<strong>高、中、低</strong>三種濕度並每日記錄。</p></div>
+        <div class="card"><h3>📐 量化方法</h3><p>本研究不測黏液化學成分，而用國小可操作的<strong>黏液分數、黏附成功率、掉落率、停留時間</strong>等指標進行量化比較。</p></div>
+      </div>
+      <div style="margin-top:30px">
+        <h3 style="color:var(--green-700);margin-bottom:14px">前人研究 ➜ 本研究的轉化</h3>
+        <div class="tbl-scroll">
+          <table class="data">
+            <thead><tr><th>文獻／既有研究重點</th><th>本研究的轉化方向</th></tr></thead>
+            <tbody>
+              <tr><td>食蟲植物能以特化葉片捕捉並消化小型動物</td><td>說明毛氈苔與捕蟲堇具備黏液型捕食基礎。</td></tr>
+              <tr><td>毛氈苔腺毛彎曲與捕食運動已有深入研究</td><td>不以腺毛運動機制為主，改以<strong>環境影響</strong>為主。</td></tr>
+              <tr><td>不同餌料與誘發物質已有相關研究</td><td>固定單一餌料，避免餌料種類成為干擾變因。</td></tr>
+              <tr><td>多種食蟲植物攝食機制已有比較研究</td><td>聚焦<strong>光照與濕度</strong>對黏液與黏附能力的影響。</td></tr>
+              <tr><td>捕蟲堇與毛氈苔構造不同</td><td>建立不同觀察標準：毛氈苔看黏液珠與腺毛，捕蟲堇看葉面濕潤與反光。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== PURPOSE ===== -->
+<div class="page" id="page-purpose">
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">三、研究目的</span>
+      <h2 class="sec-title">我們想知道五件事</h2>
+      <div class="grid g2">
+        <div class="card"><h3><span class="num">1</span>光照 × 黏液</h3><p>探討不同光照條件對毛氈苔與捕蟲堇黏液表現的影響。</p></div>
+        <div class="card"><h3><span class="num">2</span>濕度 × 黏液</h3><p>探討不同濕度條件對毛氈苔與捕蟲堇黏液表現的影響。</p></div>
+        <div class="card"><h3><span class="num">3</span>環境 × 黏附</h3><p>比較不同光照與濕度下，餌料黏附成功率與掉落率。</p></div>
+        <div class="card"><h3><span class="num">4</span>關係分析</h3><p>分析黏液表現程度與餌料黏附能力之間的關係。</p></div>
+        <div class="card" style="grid-column:1/-1"><h3><span class="num">5</span>建立方法</h3><p>建立國小學生可操作的食蟲植物環境控制與影像紀錄方法。</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== OVERVIEW ===== -->
+<div class="page" id="page-overview">
+  <section class="alt">
+    <div class="wrap">
+      <span class="eyebrow">四、實驗配置總表</span>
+      <h2 class="sec-title">四大目的・八項實驗</h2>
+      <p class="sec-lead">切換到「八項實驗」頁籤可看到每個實驗的完整設計。下表為整體配置鳥瞰。</p>
       <div class="tbl-scroll">
         <table class="data">
-          <thead><tr><th>對應課程概念</th><th>與本研究的關聯</th></tr></thead>
+          <thead><tr><th>研究目的</th><th>實驗名稱</th><th>核心觀察指標</th></tr></thead>
           <tbody>
-            <tr><td>植物的構造與功能</td><td>觀察毛氈苔腺毛、黏液珠與捕蟲堇葉面黏液如何協助捕捉餌料。</td></tr>
-            <tr><td>植物的生長條件</td><td>探討光照與濕度是否影響植物狀態及黏液表現。</td></tr>
-            <tr><td>生物適應環境</td><td>食蟲植物在養分不足環境中發展出捕蟲構造與黏液策略。</td></tr>
-            <tr><td>科學探究方法</td><td>透過控制變因、重複實驗、紀錄、比較與分析進行研究。</td></tr>
-            <tr><td>資訊融入探究</td><td>使用手機拍照、縮時攝影、照度計、濕度計與試算表整理資料。</td></tr>
+            <tr><td rowspan="2"><span class="pill l">目的一</span> 光照對黏液表現</td><td>1-1 不同光照下黏液表現比較</td><td>照度、黏液分數、黏液珠數量、葉面反光</td></tr>
+            <tr><td>1-2 不同光照下植株狀態比較</td><td>葉色、葉片數、新葉、健康分數</td></tr>
+            <tr><td rowspan="2"><span class="pill h">目的二</span> 濕度對黏液表現</td><td>2-1 不同濕度下黏液表現比較</td><td>濕度、黏液分數、葉面濕潤程度</td></tr>
+            <tr><td>2-2 不同濕度下植株狀態比較</td><td>葉片乾燥、發霉、健康分數</td></tr>
+            <tr><td rowspan="2"><span class="pill r">目的三</span> 環境對黏附能力</td><td>3-1 不同光照下餌料黏附成功率</td><td>黏附成功率、掉落率、停留時間</td></tr>
+            <tr><td>3-2 不同濕度下餌料黏附成功率</td><td>黏附成功率、掉落率、24 小時留住率</td></tr>
+            <tr><td rowspan="2"><span class="pill" style="background:#e7e2f7;color:#4f3e9c">目的四</span> 綜合關係分析</td><td>4-1 黏液分數與黏附能力關係分析</td><td>黏液分數、黏附成功率、散布圖</td></tr>
+            <tr><td>4-2 最佳環境條件驗證實驗</td><td>最佳組與對照組比較、重複驗證</td></tr>
           </tbody>
         </table>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- REVIEW -->
-<section id="review" class="alt">
-  <div class="wrap">
-    <span class="eyebrow">二、文獻探討</span>
-    <h2 class="sec-title">認識兩位黏液高手</h2>
-    <p class="sec-lead">毛氈苔與捕蟲堇都屬於<strong>黏液型食蟲植物</strong>，捕蟲方式有共同基礎，但葉片構造不同，因此要分別建立觀察指標。</p>
-
-    <div class="species">
-      <div class="sp sundew reveal">
-        <span class="emoji">🌿</span>
-        <h3>毛氈苔 Sundew</h3>
-        <div class="latin">Drosera spp.</div>
-        <p>葉面具有明顯的<strong>腺毛</strong>與<strong>黏液珠</strong>，受到餌料刺激後，腺毛可能朝向餌料彎曲。</p>
-        <ul>
-          <li>觀察重點：黏液珠明顯程度與數量</li>
-          <li>腺毛彎曲（前人已深入研究）</li>
-          <li>本研究的主要材料</li>
-        </ul>
+<!-- ===== EXPERIMENTS ===== -->
+<div class="page" id="page-experiments">
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">五、八項實驗設計</span>
+      <h2 class="sec-title">完整實驗步驟手冊</h2>
+      <div class="callout" style="margin-bottom:26px">
+        <span class="ic">📌</span>
+        <div><strong>共同原則：</strong>每種植物建議至少 6 盆以上；經費不足可先以毛氈苔為主。餌料大小約 1 mm，每片葉子原則只用一次。所有拍照需固定距離、角度、時間與光源，並記錄照度、濕度與溫度。</div>
       </div>
-      <div class="sp butter reveal">
-        <span class="emoji">🍃</span>
-        <h3>捕蟲堇 Butterwort</h3>
-        <div class="latin">Pinguicula spp.</div>
-        <p>葉片表面較<strong>平滑</strong>，靠葉面分泌黏液黏住小昆蟲，適合觀察葉面濕潤、反光與餌料停留。</p>
-        <ul>
-          <li>觀察重點：葉面濕潤與反光變化</li>
-          <li>餌料停留與局部變化</li>
-          <li>本研究的輔助比較對象</li>
-        </ul>
+      <div class="exp-tabs" id="expTabs"></div>
+      <div id="expPanels"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== SIMULATOR ===== -->
+<div class="page" id="page-simulator">
+  <section class="alt">
+    <div class="wrap">
+      <span class="eyebrow">互動實驗室</span>
+      <h2 class="sec-title">黏液表現模擬器</h2>
+      <p class="sec-lead">拉動<strong>光照</strong>與<strong>濕度</strong>滑桿，看看黏液珠與預測的黏液分數、黏附成功率如何變化。這是依研究假設建立的<strong>教學示意模型</strong>，真實數據需靠實驗測得！</p>
+      <div class="sim">
+        <div class="sim-grid">
+          <div class="sim-ctrl">
+            <div class="sim-species-pick">
+              <button id="pickSundew" class="on">🌿 毛氈苔</button>
+              <button id="pickButter">🍃 捕蟲堇</button>
+            </div>
+            <label>☀️ 光照強度 <span id="lightVal">明亮散射光</span></label>
+            <input type="range" id="lightSlider" min="0" max="100" value="65">
+            <label>💧 空氣濕度 <span id="humVal">中濕度</span></label>
+            <input type="range" id="humSlider" min="0" max="100" value="55">
+            <div class="sim-note" id="simNote">明亮散射光 + 適中濕度，通常是維持黏液的理想組合。</div>
+          </div>
+          <div class="leaf-viz">
+            <div class="leaf-stage" id="leafStage"></div>
+            <div class="score-readout">
+              <div class="score-num"><span id="scoreNum">2.6</span><small>/ 3.0 黏液分數</small></div>
+              <div class="score-label" id="scoreLabel" style="color:var(--gold)">黏液豐沛 ✨</div>
+              <div style="font-size:.85rem;color:var(--dew);margin-top:14px;text-align:left">預測餌料黏附成功率</div>
+              <div class="adhesion-bar"><div class="adhesion-fill" id="adhFill"></div></div>
+              <div style="text-align:right;font-weight:700;color:var(--gold)" id="adhPct">85%</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+</div>
 
-    <div class="grid g3" style="margin-top:24px">
-      <div class="card reveal"><h3>☀️ 光照</h3><p>光合作用的重要條件。光照不足可能讓植株變弱、影響黏液分泌；過強或過熱則造成葉面乾燥。故採<strong>明亮散射光、半遮光、較陰暗</strong>三組，不用直射烈日。</p></div>
-      <div class="card reveal"><h3>💧 濕度</h3><p>空氣太乾，黏液可能較快變乾變少；濕度太高雖能保濕，卻可能發霉。故分為<strong>高、中、低</strong>三種濕度並每日記錄。</p></div>
-      <div class="card reveal"><h3>📐 量化方法</h3><p>本研究不測黏液化學成分，而用國小可操作的<strong>黏液分數、黏附成功率、掉落率、停留時間</strong>等指標進行量化比較。</p></div>
-    </div>
-
-    <div style="margin-top:30px" class="reveal">
-      <h3 style="color:var(--green-700);margin-bottom:14px">前人研究 ➜ 本研究的轉化</h3>
+<!-- ===== ANALYSIS ===== -->
+<div class="page" id="page-analysis">
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">六、實驗紀錄與資料分析</span>
+      <h2 class="sec-title">把觀察變成數據</h2>
+      <p class="sec-lead">建議每次實驗都保留原始紀錄表、照片與整理後的統計表。照片檔名可含日期、組別、植物、葉片編號，例如 <code>2026-07-01_A光照_毛氈苔_M1-1</code>。</p>
+      <div class="grid g2">
+        <div>
+          <div class="formula"><div class="nm">平均黏液分數</div><div class="fx">各葉片黏液分數加總 ÷ 樣本數</div><div class="ds">比較不同組別黏液表現。</div></div>
+          <div class="formula"><div class="nm">黏附成功率</div><div class="fx">成功黏住次數 ÷ 總測試次數 × 100%</div><div class="ds">判斷餌料是否能被植物黏住。</div></div>
+          <div class="formula"><div class="nm">掉落率</div><div class="fx">掉落次數 ÷ 總測試次數 × 100%</div><div class="ds">比較餌料是否容易滑落或掉落。</div></div>
+        </div>
+        <div>
+          <div class="formula"><div class="nm">24 小時留住率</div><div class="fx">24 小時仍停留樣本數 ÷ 總樣本數 × 100%</div><div class="ds">觀察黏附能力是否持久。</div></div>
+          <div class="formula"><div class="nm">健康分數</div><div class="fx">0=狀態不佳　1=偏弱　2=普通　3=健康</div><div class="ds">確認環境條件是否傷害植物。</div></div>
+          <div class="callout" style="margin-top:14px"><span class="ic">📊</span><div>建議圖表：<strong>折線圖</strong>看時間變化、<strong>長條圖</strong>比較組別、<strong>散布圖</strong>（橫軸黏液分數、縱軸黏附成功率）分析兩者關係。</div></div>
+        </div>
+      </div>
+      <h3 style="color:var(--green-700);margin:34px 0 14px">黏液觀察紀錄表（範例）</h3>
       <div class="tbl-scroll">
         <table class="data">
-          <thead><tr><th>文獻／既有研究重點</th><th>本研究的轉化方向</th></tr></thead>
+          <thead><tr><th>日期</th><th>組別</th><th>植物</th><th>照度 lux</th><th>濕度 %</th><th>溫度 ℃</th><th>黏液分數 0-3</th><th>備註</th></tr></thead>
           <tbody>
-            <tr><td>食蟲植物能以特化葉片捕捉並消化小型動物</td><td>說明毛氈苔與捕蟲堇具備黏液型捕食基礎。</td></tr>
-            <tr><td>毛氈苔腺毛彎曲與捕食運動已有深入研究</td><td>不以腺毛運動機制為主，改以<strong>環境影響</strong>為主。</td></tr>
-            <tr><td>不同餌料與誘發物質已有相關研究</td><td>固定單一餌料，避免餌料種類成為干擾變因。</td></tr>
-            <tr><td>多種食蟲植物攝食機制已有比較研究</td><td>聚焦<strong>光照與濕度</strong>對黏液與黏附能力的影響。</td></tr>
-            <tr><td>捕蟲堇與毛氈苔構造不同</td><td>建立不同觀察標準：毛氈苔看黏液珠與腺毛，捕蟲堇看葉面濕潤與反光。</td></tr>
+            <tr><td>2026-07-01</td><td>明亮散射光</td><td>毛氈苔</td><td>8,500</td><td>62</td><td>27</td><td>3</td><td>黏液珠多、明亮</td></tr>
+            <tr><td>2026-07-01</td><td>半遮光</td><td>毛氈苔</td><td>3,200</td><td>61</td><td>27</td><td>2</td><td>黏液珠中等</td></tr>
+            <tr><td>2026-07-01</td><td>較陰暗</td><td>毛氈苔</td><td>600</td><td>63</td><td>26</td><td>1</td><td>黏液珠偏少</td></tr>
+            <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
           </tbody>
         </table>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- PURPOSE -->
-<section id="purpose">
-  <div class="wrap">
-    <span class="eyebrow">三、研究目的</span>
-    <h2 class="sec-title">我們想知道五件事</h2>
-    <div class="grid g2">
-      <div class="card reveal"><h3><span class="num">1</span>光照 × 黏液</h3><p>探討不同光照條件對毛氈苔與捕蟲堇黏液表現的影響。</p></div>
-      <div class="card reveal"><h3><span class="num">2</span>濕度 × 黏液</h3><p>探討不同濕度條件對毛氈苔與捕蟲堇黏液表現的影響。</p></div>
-      <div class="card reveal"><h3><span class="num">3</span>環境 × 黏附</h3><p>比較不同光照與濕度下，餌料黏附成功率與掉落率。</p></div>
-      <div class="card reveal"><h3><span class="num">4</span>關係分析</h3><p>分析黏液表現程度與餌料黏附能力之間的關係。</p></div>
-      <div class="card reveal" style="grid-column:1/-1"><h3><span class="num">5</span>建立方法</h3><p>建立國小學生可操作的食蟲植物環境控制與影像紀錄方法。</p></div>
+<!-- ===== MATERIALS ===== -->
+<div class="page" id="page-materials">
+  <section class="alt">
+    <div class="wrap">
+      <span class="eyebrow">七・八、材料清單與經費</span>
+      <h2 class="sec-title">工具、材料與經費估算</h2>
+      <h3 style="color:var(--green-700);margin-bottom:14px">三種預算方案，依設備彈性調整</h3>
+      <div class="budget-toggle" id="budgetToggle">
+        <button data-b="0"><div class="bt-name">省錢前導版</div><div class="bt-cost">3,000–4,500 元</div><div class="bt-when">學校已有手機、腳架、放大鏡與溫濕度計，先做小規模測試。</div></button>
+        <button data-b="1" class="on"><div class="bt-name">標準科展版 ⭐</div><div class="bt-cost">6,000–9,000 元</div><div class="bt-when">建議採用，可完成兩種植物、光照與濕度完整資料。</div></button>
+        <button data-b="2"><div class="bt-name">進階完整版</div><div class="bt-cost">10,000–18,000 元</div><div class="bt-when">加購植物燈、數位顯微鏡、照度計與穩定拍攝設備。</div></button>
+      </div>
+      <div id="budgetDetail" class="tbl-scroll" style="margin-bottom:34px"></div>
+      <h3 style="color:var(--green-700);margin-bottom:14px">工具與材料總清單</h3>
+      <div class="tbl-scroll">
+        <table class="data">
+          <thead><tr><th>類別</th><th>名稱</th><th>數量／規格</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td>實驗植物</td><td>毛氈苔</td><td>6-9 盆</td><td>主要研究植物，觀察黏液珠與腺毛狀態。</td></tr>
+            <tr><td>實驗植物</td><td>捕蟲堇</td><td>6-9 盆</td><td>輔助比較，觀察葉面黏液、濕潤與反光。</td></tr>
+            <tr><td>栽培材料</td><td>水苔／食蟲植物專用介質</td><td>適量</td><td>維持植物生長。</td></tr>
+            <tr><td>栽培材料</td><td>純水、RO 水或蒸餾水</td><td>適量</td><td>食蟲植物澆水，避免鹽分累積。</td></tr>
+            <tr><td>環境控制</td><td>透明收納盒、遮光網、紗網</td><td>各 1-3 組</td><td>建立高濕度、半遮光或低濕度環境。</td></tr>
+            <tr><td>光照控制</td><td>植物燈、計時插座</td><td>可選</td><td>提供穩定光照，避免天氣影響過大。</td></tr>
+            <tr><td>餌料</td><td>乾燥紅蟲碎片或魚飼料</td><td>約 1 mm</td><td>固定餌料黏附測試。</td></tr>
+            <tr><td>操作工具</td><td>細鑷子、小剪刀、美工刀</td><td>2-3 組</td><td>放置餌料、裁切對照材料。</td></tr>
+            <tr><td>觀察工具</td><td>放大鏡、手機微距鏡頭</td><td>2-5 個</td><td>觀察黏液珠與葉面細節。</td></tr>
+            <tr><td>影像工具</td><td>手機或平板、手機腳架</td><td>1-3 組</td><td>固定拍照、縮時紀錄。</td></tr>
+            <tr><td>環境測量</td><td>照度計或手機照度 App</td><td>1 組</td><td>記錄光照強度。</td></tr>
+            <tr><td>環境測量</td><td>溫濕度計</td><td>1-3 組</td><td>記錄溫度與濕度。</td></tr>
+            <tr><td>資料整理</td><td>Excel、Google 試算表</td><td>免費或學校授權</td><td>計算平均、百分比、製作圖表。</td></tr>
+            <tr><td>報告工具</td><td>Word、PowerPoint、Canva</td><td>學校授權或免費</td><td>撰寫作品書與製作簡報。</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- OVERVIEW -->
-<section id="overview" class="alt">
-  <div class="wrap">
-    <span class="eyebrow">四、實驗配置總表</span>
-    <h2 class="sec-title">四大目的・八項實驗</h2>
-    <p class="sec-lead">點選「八項實驗」可看到每個實驗的完整設計。下表為整體配置鳥瞰。</p>
-    <div class="tbl-scroll">
-      <table class="data">
-        <thead><tr><th>研究目的</th><th>實驗名稱</th><th>核心觀察指標</th></tr></thead>
-        <tbody>
-          <tr><td rowspan="2"><span class="pill l">目的一</span> 光照對黏液表現</td><td>1-1 不同光照下黏液表現比較</td><td>照度、黏液分數、黏液珠數量、葉面反光</td></tr>
-          <tr><td>1-2 不同光照下植株狀態比較</td><td>葉色、葉片數、新葉、健康分數</td></tr>
-          <tr><td rowspan="2"><span class="pill h">目的二</span> 濕度對黏液表現</td><td>2-1 不同濕度下黏液表現比較</td><td>濕度、黏液分數、葉面濕潤程度</td></tr>
-          <tr><td>2-2 不同濕度下植株狀態比較</td><td>葉片乾燥、發霉、健康分數</td></tr>
-          <tr><td rowspan="2"><span class="pill r">目的三</span> 環境對黏附能力</td><td>3-1 不同光照下餌料黏附成功率</td><td>黏附成功率、掉落率、停留時間</td></tr>
-          <tr><td>3-2 不同濕度下餌料黏附成功率</td><td>黏附成功率、掉落率、24 小時留住率</td></tr>
-          <tr><td rowspan="2"><span class="pill" style="background:#e7e2f7;color:#4f3e9c">目的四</span> 綜合關係分析</td><td>4-1 黏液分數與黏附能力關係分析</td><td>黏液分數、黏附成功率、散布圖</td></tr>
-          <tr><td>4-2 最佳環境條件驗證實驗</td><td>最佳組與對照組比較、重複驗證</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIMENTS -->
-<section id="experiments">
-  <div class="wrap">
-    <span class="eyebrow">五、八項實驗設計</span>
-    <h2 class="sec-title">完整實驗步驟手冊</h2>
-    <div class="callout reveal" style="margin-bottom:26px">
-      <span class="ic">📌</span>
-      <div><strong>共同原則：</strong>每種植物建議至少 6 盆以上；經費不足可先以毛氈苔為主。餌料大小約 1 mm，每片葉子原則只用一次。所有拍照需固定距離、角度、時間與光源，並記錄照度、濕度與溫度。</div>
-    </div>
-    <div class="exp-tabs" id="expTabs"></div>
-    <div id="expPanels"></div>
-  </div>
-</section>
-
-<!-- SIMULATOR -->
-<section id="simulator" class="alt">
-  <div class="wrap">
-    <span class="eyebrow">互動實驗室</span>
-    <h2 class="sec-title">黏液表現模擬器</h2>
-    <p class="sec-lead">拉動<strong>光照</strong>與<strong>濕度</strong>滑桿，看看黏液珠與預測的黏液分數、黏附成功率如何變化。這是依研究假設建立的<strong>教學示意模型</strong>，真實數據需靠實驗測得！</p>
-    <div class="sim reveal">
-      <div class="sim-grid">
-        <div class="sim-ctrl">
-          <div class="sim-species-pick">
-            <button id="pickSundew" class="on">🌿 毛氈苔</button>
-            <button id="pickButter">🍃 捕蟲堇</button>
-          </div>
-          <label>☀️ 光照強度 <span id="lightVal">明亮散射光</span></label>
-          <input type="range" id="lightSlider" min="0" max="100" value="65">
-          <label>💧 空氣濕度 <span id="humVal">中濕度</span></label>
-          <input type="range" id="humSlider" min="0" max="100" value="55">
-          <div class="sim-note" id="simNote">明亮散射光 + 適中濕度，通常是維持黏液的理想組合。</div>
+<!-- ===== RESULTS ===== -->
+<div class="page" id="page-results">
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">九、預期成果與研究限制</span>
+      <h2 class="sec-title">我們期待，也保持謹慎</h2>
+      <div class="grid g2">
+        <div class="card" style="border-top:4px solid var(--green-500)">
+          <h3>🎯 預期成果</h3>
+          <ul style="list-style:none;margin-top:10px">
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>建立兩種植物在不同光照下的黏液表現資料。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>建立兩種植物在不同濕度下的黏液表現資料。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>比較黏液表現與黏附成功率是否具一致趨勢。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>找出較適合維持黏液與黏附能力的環境條件。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>建立可供國小操作的觀察、拍照與量化流程。</li>
+          </ul>
         </div>
-        <div class="leaf-viz">
-          <div class="leaf-stage" id="leafStage"></div>
-          <div class="score-readout">
-            <div class="score-num"><span id="scoreNum">2.6</span><small>/ 3.0 黏液分數</small></div>
-            <div class="score-label" id="scoreLabel" style="color:var(--gold)">黏液豐沛 ✨</div>
-            <div style="font-size:.85rem;color:var(--dew);margin-top:14px;text-align:left">預測餌料黏附成功率</div>
-            <div class="adhesion-bar"><div class="adhesion-fill" id="adhFill"></div></div>
-            <div style="text-align:right;font-weight:700;color:var(--gold)" id="adhPct">85%</div>
-          </div>
+        <div class="card" style="border-top:4px solid var(--coral)">
+          <h3>⚠️ 研究限制與注意</h3>
+          <ul style="list-style:none;margin-top:10px">
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>正式實驗前需先篩選狀態相近的植株。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>天氣、冷氣、通風會影響溫濕度，需每日記錄。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>兩種植物構造不同，須分別制定觀察標準。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>餌料大小影響結果，盡量裁成接近 1 mm 並用同一種。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>植物狀態明顯變差應停止該組並記錄原因。</li>
+            <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>以外觀與效果為主，不分析化學成分，避免過度推論。</li>
+          </ul>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- ANALYSIS -->
-<section id="analysis">
-  <div class="wrap">
-    <span class="eyebrow">六、實驗紀錄與資料分析</span>
-    <h2 class="sec-title">把觀察變成數據</h2>
-    <p class="sec-lead">建議每次實驗都保留原始紀錄表、照片與整理後的統計表。照片檔名可含日期、組別、植物、葉片編號，例如 <code>2026-07-01_A光照_毛氈苔_M1-1</code>。</p>
-    <div class="grid g2">
-      <div>
-        <div class="formula reveal"><div class="nm">平均黏液分數</div><div class="fx">各葉片黏液分數加總 ÷ 樣本數</div><div class="ds">比較不同組別黏液表現。</div></div>
-        <div class="formula reveal"><div class="nm">黏附成功率</div><div class="fx">成功黏住次數 ÷ 總測試次數 × 100%</div><div class="ds">判斷餌料是否能被植物黏住。</div></div>
-        <div class="formula reveal"><div class="nm">掉落率</div><div class="fx">掉落次數 ÷ 總測試次數 × 100%</div><div class="ds">比較餌料是否容易滑落或掉落。</div></div>
-      </div>
-      <div>
-        <div class="formula reveal"><div class="nm">24 小時留住率</div><div class="fx">24 小時仍停留樣本數 ÷ 總樣本數 × 100%</div><div class="ds">觀察黏附能力是否持久。</div></div>
-        <div class="formula reveal"><div class="nm">健康分數</div><div class="fx">0=狀態不佳　1=偏弱　2=普通　3=健康</div><div class="ds">確認環境條件是否傷害植物。</div></div>
-        <div class="callout reveal" style="margin-top:14px"><span class="ic">📊</span><div>建議圖表：<strong>折線圖</strong>看時間變化、<strong>長條圖</strong>比較組別、<strong>散布圖</strong>（橫軸黏液分數、縱軸黏附成功率）分析兩者關係。</div></div>
-      </div>
+<!-- ===== QUIZ ===== -->
+<div class="page" id="page-quiz">
+  <section class="alt">
+    <div class="wrap">
+      <span class="eyebrow">學習挑戰</span>
+      <h2 class="sec-title">互動小測驗</h2>
+      <p class="sec-lead">看完研究設計，來檢驗一下你的理解吧！點選你認為正確的答案。</p>
+      <div class="quiz" id="quizBox"></div>
+      <div class="quiz-score" id="quizScore"></div>
     </div>
+  </section>
+</div>
 
-    <h3 style="color:var(--green-700);margin:34px 0 14px">黏液觀察紀錄表（範例）</h3>
-    <div class="tbl-scroll">
-      <table class="data">
-        <thead><tr><th>日期</th><th>組別</th><th>植物</th><th>照度 lux</th><th>濕度 %</th><th>溫度 ℃</th><th>黏液分數 0-3</th><th>備註</th></tr></thead>
-        <tbody>
-          <tr><td>2026-07-01</td><td>明亮散射光</td><td>毛氈苔</td><td>8,500</td><td>62</td><td>27</td><td>3</td><td>黏液珠多、明亮</td></tr>
-          <tr><td>2026-07-01</td><td>半遮光</td><td>毛氈苔</td><td>3,200</td><td>61</td><td>27</td><td>2</td><td>黏液珠中等</td></tr>
-          <tr><td>2026-07-01</td><td>較陰暗</td><td>毛氈苔</td><td>600</td><td>63</td><td>26</td><td>1</td><td>黏液珠偏少</td></tr>
-          <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
-        </tbody>
-      </table>
+<!-- ===== REFERENCES ===== -->
+<div class="page" id="page-references">
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">十、參考文獻</span>
+      <h2 class="sec-title">參考文獻</h2>
+      <ol class="refs">
+        <li>吳美麗（1980）。〈食蟲植物簡介〉。《科學教育月刊》，35，29–32。</li>
+        <li>李明儒（2009）。〈神奇的肉食植物〉。《鄉間小路：家庭園藝》。</li>
+        <li>蔡佩珊（2009）。〈肉食植物（Carnivorous Plants）〉。《科學 Online》。</li>
+        <li>廖仁滄（2025）。〈捕蟲菫〉。國立自然科學博物館植物園主題植物資料。</li>
+        <li>高雄市燕巢區深水國民小學（2017）。〈「蝕」在變態：幾種常見的食蟲植物變態葉攝食機制之探討〉。高雄市第 52 屆中小學科學展覽會國小組生物科作品說明書。</li>
+        <li>謝謹暄、黃翠瑩（2019）。〈點線面：探討毛氈苔的捕食運動機制〉。第 59 屆中小學科學展覽會高級中等學校組植物學科作品說明書。</li>
+        <li>謝謹暄（2020）。〈好酵：探討毛氈苔黏液的抑制能力與啟動腺毛彎曲的誘發物質〉。第 60 屆中小學科學展覽會作品說明書。</li>
+        <li>柯睿原、彭煥宇、張維中（2023）。〈兩種酵母菌對毛氈苔消化行為之影響〉。2023 臺灣國際科學展覽會植物學科作品說明書。</li>
+        <li>Freund, M., et al. (2022). The digestive systems of carnivorous plants. <em>Plant Physiology, 190</em>(1), 44–59.</li>
+        <li>Alcalá, R. E., &amp; Domínguez, C. A. (2005). Differential selection for carnivory traits along an environmental gradient in <em>Pinguicula moranensis</em>. <em>Ecology, 86</em>(10), 2652–2660.</li>
+        <li>Pavlovič, A., et al. (2014). Feeding on prey increases photosynthetic efficiency in the carnivorous sundew <em>Drosera capensis</em>. <em>Annals of Botany, 113</em>(1), 69–78.</li>
+        <li>Ivesic, C., et al. (2022). Snatching Sundews—Analysis of tentacle movement in two species of <em>Drosera</em>. <em>Plants, 11</em>(23), 3212.</li>
+      </ol>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- MATERIALS / BUDGET -->
-<section id="materials" class="alt">
-  <div class="wrap">
-    <span class="eyebrow">七・八、材料清單與經費</span>
-    <h2 class="sec-title">工具、材料與經費估算</h2>
+<!-- PREV / NEXT -->
+<div class="page-nav">
+  <button id="prevBtn">← 上一頁</button>
+  <button id="nextBtn">下一頁 →</button>
+</div>
 
-    <h3 style="color:var(--green-700);margin-bottom:14px">三種預算方案，依設備彈性調整</h3>
-    <div class="budget-toggle" id="budgetToggle">
-      <button data-b="0"><div class="bt-name">省錢前導版</div><div class="bt-cost">3,000–4,500 元</div><div class="bt-when">學校已有手機、腳架、放大鏡與溫濕度計，先做小規模測試。</div></button>
-      <button data-b="1" class="on"><div class="bt-name">標準科展版 ⭐</div><div class="bt-cost">6,000–9,000 元</div><div class="bt-when">建議採用，可完成兩種植物、光照與濕度完整資料。</div></button>
-      <button data-b="2"><div class="bt-name">進階完整版</div><div class="bt-cost">10,000–18,000 元</div><div class="bt-when">加購植物燈、數位顯微鏡、照度計與穩定拍攝設備。</div></button>
-    </div>
-
-    <div id="budgetDetail" class="tbl-scroll" style="margin-bottom:34px"></div>
-
-    <h3 style="color:var(--green-700);margin-bottom:14px">工具與材料總清單</h3>
-    <div class="tbl-scroll">
-      <table class="data">
-        <thead><tr><th>類別</th><th>名稱</th><th>數量／規格</th><th>用途</th></tr></thead>
-        <tbody>
-          <tr><td>實驗植物</td><td>毛氈苔</td><td>6-9 盆</td><td>主要研究植物，觀察黏液珠與腺毛狀態。</td></tr>
-          <tr><td>實驗植物</td><td>捕蟲堇</td><td>6-9 盆</td><td>輔助比較，觀察葉面黏液、濕潤與反光。</td></tr>
-          <tr><td>栽培材料</td><td>水苔／食蟲植物專用介質</td><td>適量</td><td>維持植物生長。</td></tr>
-          <tr><td>栽培材料</td><td>純水、RO 水或蒸餾水</td><td>適量</td><td>食蟲植物澆水，避免鹽分累積。</td></tr>
-          <tr><td>環境控制</td><td>透明收納盒、遮光網、紗網</td><td>各 1-3 組</td><td>建立高濕度、半遮光或低濕度環境。</td></tr>
-          <tr><td>光照控制</td><td>植物燈、計時插座</td><td>可選</td><td>提供穩定光照，避免天氣影響過大。</td></tr>
-          <tr><td>餌料</td><td>乾燥紅蟲碎片或魚飼料</td><td>約 1 mm</td><td>固定餌料黏附測試。</td></tr>
-          <tr><td>操作工具</td><td>細鑷子、小剪刀、美工刀</td><td>2-3 組</td><td>放置餌料、裁切對照材料。</td></tr>
-          <tr><td>觀察工具</td><td>放大鏡、手機微距鏡頭</td><td>2-5 個</td><td>觀察黏液珠與葉面細節。</td></tr>
-          <tr><td>影像工具</td><td>手機或平板、手機腳架</td><td>1-3 組</td><td>固定拍照、縮時紀錄。</td></tr>
-          <tr><td>環境測量</td><td>照度計或手機照度 App</td><td>1 組</td><td>記錄光照強度。</td></tr>
-          <tr><td>環境測量</td><td>溫濕度計</td><td>1-3 組</td><td>記錄溫度與濕度。</td></tr>
-          <tr><td>資料整理</td><td>Excel、Google 試算表</td><td>免費或學校授權</td><td>計算平均、百分比、製作圖表。</td></tr>
-          <tr><td>報告工具</td><td>Word、PowerPoint、Canva</td><td>學校授權或免費</td><td>撰寫作品書與製作簡報。</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- RESULTS -->
-<section id="results">
-  <div class="wrap">
-    <span class="eyebrow">九、預期成果與研究限制</span>
-    <h2 class="sec-title">我們期待，也保持謹慎</h2>
-    <div class="grid g2">
-      <div class="card reveal" style="border-top:4px solid var(--green-500)">
-        <h3>🎯 預期成果</h3>
-        <ul style="list-style:none;margin-top:10px">
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>建立兩種植物在不同光照下的黏液表現資料。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>建立兩種植物在不同濕度下的黏液表現資料。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>比較黏液表現與黏附成功率是否具一致趨勢。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>找出較適合維持黏液與黏附能力的環境條件。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">✔</span>建立可供國小操作的觀察、拍照與量化流程。</li>
-        </ul>
-      </div>
-      <div class="card reveal" style="border-top:4px solid var(--coral)">
-        <h3>⚠️ 研究限制與注意</h3>
-        <ul style="list-style:none;margin-top:10px">
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>正式實驗前需先篩選狀態相近的植株。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>天氣、冷氣、通風會影響溫濕度，需每日記錄。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>兩種植物構造不同，須分別制定觀察標準。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>餌料大小影響結果，盡量裁成接近 1 mm 並用同一種。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>植物狀態明顯變差應停止該組並記錄原因。</li>
-          <li style="padding:7px 0 7px 22px;position:relative"><span style="position:absolute;left:0">•</span>以外觀與效果為主，不分析化學成分，避免過度推論。</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- QUIZ -->
-<section id="quiz" class="alt">
-  <div class="wrap">
-    <span class="eyebrow">學習挑戰</span>
-    <h2 class="sec-title">互動小測驗</h2>
-    <p class="sec-lead">看完研究設計，來檢驗一下你的理解吧！點選你認為正確的答案。</p>
-    <div class="quiz" id="quizBox"></div>
-    <div class="quiz-score" id="quizScore"></div>
-  </div>
-</section>
-
-<!-- REFERENCES -->
-<section id="references">
-  <div class="wrap">
-    <span class="eyebrow">十、參考文獻</span>
-    <h2 class="sec-title">參考文獻</h2>
-    <ol class="refs">
-      <li>吳美麗（1980）。〈食蟲植物簡介〉。《科學教育月刊》，35，29–32。</li>
-      <li>李明儒（2009）。〈神奇的肉食植物〉。《鄉間小路：家庭園藝》。</li>
-      <li>蔡佩珊（2009）。〈肉食植物（Carnivorous Plants）〉。《科學 Online》。</li>
-      <li>廖仁滄（2025）。〈捕蟲菫〉。國立自然科學博物館植物園主題植物資料。</li>
-      <li>高雄市燕巢區深水國民小學（2017）。〈「蝕」在變態：幾種常見的食蟲植物變態葉攝食機制之探討〉。高雄市第 52 屆中小學科學展覽會國小組生物科作品說明書。</li>
-      <li>謝謹暄、黃翠瑩（2019）。〈點線面：探討毛氈苔的捕食運動機制〉。第 59 屆中小學科學展覽會高級中等學校組植物學科作品說明書。</li>
-      <li>謝謹暄（2020）。〈好酵：探討毛氈苔黏液的抑制能力與啟動腺毛彎曲的誘發物質〉。第 60 屆中小學科學展覽會作品說明書。</li>
-      <li>柯睿原、彭煥宇、張維中（2023）。〈兩種酵母菌對毛氈苔消化行為之影響〉。2023 臺灣國際科學展覽會植物學科作品說明書。</li>
-      <li>Freund, M., et al. (2022). The digestive systems of carnivorous plants. <em>Plant Physiology, 190</em>(1), 44–59.</li>
-      <li>Alcalá, R. E., &amp; Domínguez, C. A. (2005). Differential selection for carnivory traits along an environmental gradient in <em>Pinguicula moranensis</em>. <em>Ecology, 86</em>(10), 2652–2660.</li>
-      <li>Pavlovič, A., et al. (2014). Feeding on prey increases photosynthetic efficiency in the carnivorous sundew <em>Drosera capensis</em>. <em>Annals of Botany, 113</em>(1), 69–78.</li>
-      <li>Ivesic, C., et al. (2022). Snatching Sundews—Analysis of tentacle movement in two species of <em>Drosera</em>. <em>Plants, 11</em>(23), 3212.</li>
-    </ol>
-  </div>
-</section>
+</main>
 
 <footer>
   <div class="wrap">
@@ -582,10 +631,31 @@ footer a{color:var(--green-300)}
 </footer>
 
 <script>
-/* ===== NAV TOGGLE ===== */
-const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');
-navToggle.addEventListener('click',()=>navLinks.classList.toggle('open'));
-navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+/* ===== TAB / PAGE SWITCHING ===== */
+const ORDER=['home','motive','review','purpose','overview','experiments','simulator','analysis','materials','results','quiz','references'];
+const tabbar=document.getElementById('tabbar');
+const prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
+function showPage(key){
+  if(!ORDER.includes(key))key='home';
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+key));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.t===key));
+  // active tab into view
+  const at=tabbar.querySelector('.tab.active');if(at)at.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+  const idx=ORDER.indexOf(key);
+  prevBtn.disabled=idx<=0;nextBtn.disabled=idx>=ORDER.length-1;
+  prevBtn.textContent=idx>0?('← '+tabLabel(ORDER[idx-1])):'← 上一頁';
+  nextBtn.textContent=idx<ORDER.length-1?(tabLabel(ORDER[idx+1])+' →'):'下一頁 →';
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.replaceState(null,'','#'+key);
+}
+function tabLabel(key){const b=tabbar.querySelector('.tab[data-t="'+key+'"]');return b?b.textContent.replace(/^[一二三四五六七八九十]\s*/,'').trim():'';}
+tabbar.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)showPage(b.dataset.t);});
+document.body.addEventListener('click',e=>{const g=e.target.closest('[data-goto]');if(g)showPage(g.dataset.goto);});
+prevBtn.addEventListener('click',()=>{const i=ORDER.indexOf(currentKey());if(i>0)showPage(ORDER[i-1]);});
+nextBtn.addEventListener('click',()=>{const i=ORDER.indexOf(currentKey());if(i<ORDER.length-1)showPage(ORDER[i+1]);});
+function currentKey(){const a=document.querySelector('.tab.active');return a?a.dataset.t:'home';}
+// initial from hash
+showPage((location.hash||'#home').slice(1));
 
 /* ===== HERO DEW DROPS ===== */
 (function(){const h=document.querySelector('.hero');for(let i=0;i<12;i++){const d=document.createElement('div');d.className='dewdrop';const s=8+Math.random()*22;d.style.width=s+'px';d.style.height=s*1.2+'px';d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDelay=(Math.random()*7)+'s';d.style.animationDuration=(5+Math.random()*5)+'s';h.appendChild(d);}})();
@@ -648,42 +718,32 @@ let species='sundew';
 const pickSundew=document.getElementById('pickSundew'),pickButter=document.getElementById('pickButter');
 pickSundew.addEventListener('click',()=>{species='sundew';pickSundew.classList.add('on');pickButter.classList.remove('on');updateSim();});
 pickButter.addEventListener('click',()=>{species='butter';pickButter.classList.add('on');pickSundew.classList.remove('on');updateSim();});
-
-// build tentacles
 const TENT=14;
 for(let i=0;i<TENT;i++){const t=document.createElement('div');t.className='tentacle';const ang=(i/TENT)*360;t.style.transform=`rotate(${ang}deg)`;const bead=document.createElement('div');bead.className='bead';t.appendChild(bead);leafStage.appendChild(t);}
 const tentacles=leafStage.querySelectorAll('.tentacle');
-
 function lightLabel(v){return v<33?'較陰暗':v<70?'明亮散射光':'強光（接近直射）';}
 function humLabel(v){return v<33?'低濕度':v<67?'中濕度':'高濕度';}
-
 function updateSim(){
   const L=+lightSlider.value,H=+humSlider.value;
   lightVal.textContent=lightLabel(L);humVal.textContent=humLabel(H);
-  // model: ideal light ~ 65 (bright diffuse), ideal humidity ~ 60 (sundew) / 70 (butter)
   const idealH = species==='sundew'?60:72;
-  const lightFactor = 1 - Math.pow(Math.abs(L-65)/65,1.3);        // peak at bright diffuse
-  const humFactor   = 1 - Math.pow(Math.abs(H-idealH)/72,1.3);    // peak at ideal humidity
+  const lightFactor = 1 - Math.pow(Math.abs(L-65)/65,1.3);
+  const humFactor   = 1 - Math.pow(Math.abs(H-idealH)/72,1.3);
   let score = 3*(0.55*Math.max(0,lightFactor)+0.45*Math.max(0,humFactor));
-  // penalties: too dark, too dry, too wet
   if(L<20) score*=0.6; if(H<22) score*=0.65; if(H>90) score*=0.8;
   score=Math.max(0.2,Math.min(3,score));
   scoreNum.textContent=score.toFixed(1);
-  // adhesion roughly tracks score
-  const adh=Math.round(Math.min(95,Math.max(10,score/3*92+ (Math.random()*0-0))));
+  const adh=Math.round(Math.min(95,Math.max(10,score/3*92)));
   adhFill.style.width=adh+'%';adhPct.textContent=adh+'%';
-  // label
   let lab,col;
   if(score>=2.5){lab='黏液豐沛 ✨';col='var(--gold)';}
   else if(score>=1.6){lab='黏液中等';col='var(--green-300)';}
   else{lab='黏液偏少 ⚠️';col='var(--coral)';}
   scoreLabel.textContent=lab;scoreLabel.style.color=col;
-  // visuals
   const ratio=score/3;
-  tentacles.forEach((t,i)=>{const bead=t.querySelector('.bead');const sz=4+ratio*12;bead.style.width=sz+'px';bead.style.height=sz+'px';bead.style.opacity=0.3+ratio*0.7;t.style.height=(species==='sundew'?(34+ratio*20):(20+ratio*10))+'px';t.style.background=species==='sundew'?'#3a9d6a':'#5cc08c';});
+  tentacles.forEach((t)=>{const bead=t.querySelector('.bead');const sz=4+ratio*12;bead.style.width=sz+'px';bead.style.height=sz+'px';bead.style.opacity=0.3+ratio*0.7;t.style.height=(species==='sundew'?(34+ratio*20):(20+ratio*10))+'px';t.style.background=species==='sundew'?'#3a9d6a':'#5cc08c';});
   leafStage.style.background=`radial-gradient(circle at 50% 45%, ${species==='sundew'?'#7a2740':'#39518a'}, #0f2417)`;
   leafStage.style.boxShadow=`inset 0 0 ${30+ratio*30}px rgba(189,240,214,${0.1+ratio*0.4})`;
-  // note
   let note;
   if(score>=2.5) note='理想組合！黏液保持濕潤明亮，餌料最容易被黏住。';
   else if(L<20) note='光照太弱，植株變弱可能降低黏液分泌。';
@@ -733,17 +793,13 @@ QUIZ.forEach((item,qi)=>{
       if(oi===item.a){btn.classList.add('correct');correct++;}
       else{btn.classList.add('wrong');opts[item.a].classList.add('correct');}
       d.querySelector('.explain').classList.add('show');
-      if(answered===QUIZ.length){quizScore.classList.add('show');quizScore.textContent=`🎉 你答對了 ${correct} / ${QUIZ.length} 題！`+(correct===QUIZ.length?' 太厲害了，完全掌握研究設計！':correct>=QUIZ.length/2?' 不錯喔，再複習一下就更棒！':' 再回去看看研究內容吧！');quizScore.scrollIntoView({behavior:'smooth',block:'center'});}
+      if(answered===QUIZ.length){quizScore.classList.add('show');quizScore.textContent=`🎉 你答對了 ${correct} / ${QUIZ.length} 題！`+(correct===QUIZ.length?' 太厲害了，完全掌握研究設計！':correct>=QUIZ.length/2?' 不錯喔，再複習一下就更棒！':' 再回去看看研究內容吧！');}
     });
     d.appendChild(btn);
   });
   const ex=document.createElement('div');ex.className='explain';ex.innerHTML='💡 '+item.e;d.appendChild(ex);
   quizBox.appendChild(d);
 });
-
-/* ===== REVEAL ON SCROLL ===== */
-const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
